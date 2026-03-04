@@ -17,20 +17,49 @@ public_users.get('/',function (req, res) {
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const isbn = req.params.isbn;
+    if (books[isbn]) {
+        res.status(200).send(JSON.stringify(books[isbn], null, 4));
+    } else {
+        res.status(404).json({ message: `Book not found for ISBN: ${isbn}`});
+    }
  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const author = decodeURI(req.params.author);
+    const booksKeys = Object.keys(books);
+    const booksByAuthor = booksKeys
+        .filter((key) => books[key].author === author)
+        .reduce((book, key) => {
+            return Object.assign(book, {
+                [key]: books[key]
+            });
+        }, {});
+
+    if (Object.keys(booksByAuthor).length > 0) {
+        res.status(200).send(JSON.stringify(booksByAuthor, null, 4));
+    } else {
+        res.status(404).json({ message: `No books found for Author: ${author}` });
+    }
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const title = decodeURI(req.params.title);
+    const booksKeys = Object.keys(books);
+    const booksByTitle = booksKeys
+        .filter((key) => books[key].title === title)
+        .reduce((book, key) => {
+            return Object.assign(book, {
+                [key]: books[key]
+            });
+        }, {});
+    if (Object.keys(booksByTitle).length > 0) {
+        res.status(200).send(JSON.stringify(booksByTitle, null, 4));
+    } else {
+        res.status(404).json({ message: `No books found for Title: ${title}` });
+    }
 });
 
 //  Get book review
