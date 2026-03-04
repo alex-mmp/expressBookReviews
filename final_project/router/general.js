@@ -4,35 +4,21 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-const doesUserExist = (username) => {
-    let usersWithUsername = users.filter((user) => {
-        return user.username === username
-    });
-    if (usersWithUsername.length > 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 public_users.post("/register", (req,res) => {
-    const user = {
-        username: req.body.username,
-        password: req.body.password
-    };
-    if (!user.username) {
+    const username = req.body.username;
+    const password = req.body.password;
+    if (!username) {
         return res.status(400).json({ message: "No username provided" });
     }
-    if (!user.password) {
+    if (!password) {
         return res.status(400).json({ message: "No password provided" });
     }
 
-    if (doesUserExist(user.username)) {
+    if (isValid(username)) {
         return res.status(400).json({ message: "That username is taken" });
     } else {
-        users = [...users, user];
-        console.log(users);
-        return res.status(200).send(`User added successfully: ${user.username}`);
+        users.push({"username":username,"password":password});
+        return res.status(200).send(`User added successfully: ${username}`);
     }
 });
 
