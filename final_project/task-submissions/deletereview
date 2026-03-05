@@ -1,0 +1,5 @@
+{"message":"Review added for isbn: 5 by user: alex","reviews":{"alexsarson":"First review for alexsarson","alex":"First review for alex"}}
+
+curl -X DELETE -b expressBookReviews/final_project/login-cookies.txt http://localhost:5000/customer/auth/review/5
+
+{"message":"Review deleted successfully for ISBN: 5 by user alex","reviews":{"alexsarson":"First review for alexsarson"}}

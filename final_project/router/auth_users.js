@@ -62,7 +62,10 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     let isbn = req.params.isbn;
     let review = req.body.review;
 
-    if (!isbn || !books[isbn]) {
+    if (!isbn) {
+        return res.status(400).json({ message: "No ISBN supplied in the request" });
+    }
+    if (!books[isbn]) {
         return res.status(404).json({ message: `No book found for ISBN: ${isbn}`});
     }
     if (!review) {
@@ -76,7 +79,22 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     });
 });
 
-// Delet a book review
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    let isbn = req.params.isbn;
+    let username = req.session.authorization['username'];
+    if (!isbn) {
+        return res.status(400).json({ message: "No ISBN supplied in the request" });
+    }
+    if (!books[isbn].reviews[username]) {
+        return res.status(410).json({ message: `No review found for ISBN: ${isbn} by user: ${username}` });
+    }
+    delete books[isbn].reviews[username];
+    return res.status(200).json({
+        message: `Review deleted successfully for ISBN: ${isbn} by user ${username}`,
+        reviews: books[isbn].reviews
+    });
+});
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
