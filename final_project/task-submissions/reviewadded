@@ -1,0 +1,11 @@
+curl -H "Content-type:application/json" -X PUT -d '{"review":"First review for alex"}' -b expressBookReviews/final_project/login-cookies.txt http://localhost:5000/customer/auth/review/5
+
+{"message":"Review added for isbn: 5 by user: alex","reviews":{"alex":"First review for alex"}}
+
+curl -H "Content-type:application/json" -X PUT -d '{"review":"First review for alexsarson"}' -b expressBookReviews/final_project/login-cookies.txt http://localhost:5000/customer/auth/review/5
+
+{"message":"Review added for isbn: 5 by user: alexsarson","reviews":{"alex":"First review for alex","alexsarson":"First review for alexsarson"}}
+
+curl -H "Content-type:application/json" -X PUT -d '{"review":"Modified review for alex"}' -b expressBookReviews/final_project/login-cookies.txt http://localhost:5000/customer/auth/review/5
+
+{"message":"Review added for isbn: 5 by user: alex","reviews":{"alex":"Modified review for alex","alexsarson":"First review for alexsarson"}}

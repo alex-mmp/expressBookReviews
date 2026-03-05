@@ -1,0 +1,3 @@
+curl -H "Content-type:application/json" -X POST -d '{"username":"alex","password":"beaner"}' http://localhost:5000/register
+
+User added successfully: alex
