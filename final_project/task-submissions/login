@@ -4,3 +4,17 @@ curl -X POST  http://localhost:5000/customer/login \
      -c expressBookReviews/final_project/login-cookies.txt
 
 User: alex logged in successfully
+
+curl -X POST  http://localhost:5000/customer/login \
+     -d '{"username":"alex","password":"password123"}' \
+     -H "Content-type:application/json" \
+     -c expressBookReviews/final_project/login-cookies.txt
+
+{"message":"Invalid login information"}
+
+curl -X POST  http://localhost:5000/customer/login \
+     -d '{"username":"alex"}' \
+     -H "Content-type:application/json" \
+     -c expressBookReviews/final_project/login-cookies.txt
+
+{"message":"Error logging in user"}
