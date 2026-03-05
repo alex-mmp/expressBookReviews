@@ -4,6 +4,14 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+const getBooksAsync = () => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(books);
+        }, 500);
+    });
+};
+
 public_users.post("/register", (req,res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -23,8 +31,13 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-    return res.status(200).send(JSON.stringify(books, null, 4));
+public_users.get('/', async (req, res) => {
+    try {
+        const bookList = await getBooksAsync();
+        return res.status(200).send(JSON.stringify(bookList, null, 4));
+    } catch (error) {
+        return res.status(500).send("Internal server error");
+    }
 });
 
 // Get book details based on ISBN
