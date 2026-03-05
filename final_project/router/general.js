@@ -36,7 +36,10 @@ public_users.get('/', async (req, res) => {
         const bookList = await getBooksAsync();
         return res.status(200).send(JSON.stringify(bookList, null, 4));
     } catch (error) {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error
+        });
     }
 });
 
@@ -54,7 +57,10 @@ public_users.get('/isbn/:isbn', async (req, res) => {
             return res.status(404).json({ message: `Book not found for ISBN: ${isbn}`});
         }
     } catch (error) {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error
+        });
     }
  });
   
@@ -81,25 +87,39 @@ public_users.get('/author/:author', async (req, res) => {
             return res.status(404).json({ message: `No books found for Author: ${author}` });
         }
     } catch (error) {
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error
+        });
     }
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+public_users.get('/title/:title', async (req, res) => {
     const title = decodeURI(req.params.title);
-    const booksKeys = Object.keys(books);
-    const booksByTitle = booksKeys
-        .filter((key) => books[key].title === title)
-        .reduce((book, key) => {
-            return Object.assign(book, {
-                [key]: books[key]
-            });
-        }, {});
-    if (Object.keys(booksByTitle).length > 0) {
-        return res.status(200).send(JSON.stringify(booksByTitle, null, 4));
-    } else {
-        return res.status(404).json({ message: `No books found for Title: ${title}` });
+    if (!title) {
+        return res.status(400).json({ message: "No title supplied with request" });
+    }
+    try {
+        const bookList = await getBooksAsync();
+        const booksKeys = Object.keys(bookList);
+        const booksByTitle = booksKeys
+            .filter((key) => bookList[key].title === title)
+            .reduce((book, key) => {
+                return Object.assign(book, {
+                    [key]: bookList[key]
+                });
+            }, {});
+        if (Object.keys(booksByTitle).length > 0) {
+            return res.status(200).send(JSON.stringify(booksByTitle, null, 4));
+        } else {
+            return res.status(404).json({ message: `No books found for Title: ${title}` });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error
+        });
     }
 });
 
