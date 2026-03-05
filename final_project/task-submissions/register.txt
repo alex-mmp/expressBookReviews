@@ -1,18 +1,18 @@
-curl -X POST http://localhost:5000/register \
+curl -X POST "http://localhost:5000/register" \
      -H "Content-Type: application/json" \
      -d '{"username":"alexsarson", "password":"password123"}'
 
-on first run: {"message":"User added successfully with username: alexsarson and password: password123"}
+{"message":"User added successfully with username: alexsarson and password: password123"}
 
-on second run: {"message":"The username: alexsarson is already taken"}
+{"message":"The username: alexsarson is already taken"}
 
-curl -X POST http://localhost:5000/register \
+curl -X POST "http://localhost:5000/register" \
      -H "Content-Type: application/json" \
      -d '{"password":"password123"}'
 
 {"message":"No username provided"}
 
-curl -X POST http://localhost:5000/register \
+curl -X POST "http://localhost:5000/register" \
      -H "Content-Type: application/json" \
      -d '{"username":"alexsarson"}'
 
