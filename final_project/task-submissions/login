@@ -1,3 +1,6 @@
-curl -H "Content-type:application/json" -X POST -d '{"username":"alex","password":"beaner"}' -c expressBookReviews/final_project/login-cookies.txt http://localhost:5000/customer/login
+curl -X POST  http://localhost:5000/customer/login \
+     -d '{"username":"alexsarson","password":"password123"}' \
+     -H "Content-type:application/json" \
+     -c expressBookReviews/final_project/login-cookies.txt
 
 User: alex logged in successfully

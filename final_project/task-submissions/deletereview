@@ -1,5 +1,8 @@
-{"message":"Review added for isbn: 5 by user: alex","reviews":{"alexsarson":"First review for alexsarson","alex":"First review for alex"}}
+reviews before curl: {"message":"Review added for isbn: 5 by user: alex","reviews":{"alexsarson":"First review for alexsarson","alex":"First review for alex"}}
 
-curl -X DELETE -b expressBookReviews/final_project/login-cookies.txt http://localhost:5000/customer/auth/review/5
+curl -X DELETE http://localhost:5000/customer/auth/review/5 \
+     -b expressBookReviews/final_project/login-cookies.txt
 
-{"message":"Review deleted successfully for ISBN: 5 by user alex","reviews":{"alexsarson":"First review for alexsarson"}}
+reviews after curl: {"message":"Review deleted successfully for ISBN: 5 by user alex","reviews":{"alexsarson":"First review for alexsarson"}}
+
+with no reviews: {"message":"No review found for ISBN: 5 by user: alexsarson"}
