@@ -36,17 +36,25 @@ public_users.get('/', async (req, res) => {
         const bookList = await getBooksAsync();
         return res.status(200).send(JSON.stringify(bookList, null, 4));
     } catch (error) {
-        return res.status(500).send("Internal server error");
+        return res.status(500).json({ message: "Internal server error" });
     }
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
+public_users.get('/isbn/:isbn', async (req, res) => {
     const isbn = req.params.isbn;
-    if (books[isbn]) {
-        return res.status(200).send(JSON.stringify(books[isbn], null, 4));
-    } else {
-        return res.status(404).json({ message: `Book not found for ISBN: ${isbn}`});
+    if (!isbn) {
+        return res.status(400).json({ message: "No ISBN supplied with request"});
+    }
+    try {
+        const bookList = await getBooksAsync();
+        if (bookList[isbn]) {
+            return res.status(200).send(JSON.stringify(books[isbn], null, 4));
+        } else {
+            return res.status(404).json({ message: `Book not found for ISBN: ${isbn}`});
+        }
+    } catch (error) {
+        return res.status(500).json({ message: "Internal server error" });
     }
  });
   
